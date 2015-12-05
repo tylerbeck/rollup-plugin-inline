@@ -1,25 +1,32 @@
 import rollup from 'rollup';
+import fs from 'fs-extra-promise';
 import external from  '../src/external';
 
 process.chdir( __dirname );
+const output = './test-out';
 
 describe( 'rollup-plugin-external', () => {
   describe( 'simple integration', () => {
-    it( 'should bundle as expected', () => {
+
+    after( () => {
+      //fs.removeSync( output );
+    });
+
+    before( () => {
+      const ext = external({ processors: [] });
       return rollup.rollup({
         entry: 'fixtures/simple.js',
-        plugins: [
-          external({ processors: [] })
-        ]
+        plugins: [ ext ]
       }).then(function( bundle ) {
         var generated = bundle.generate();
         var code = generated.code;
-        // return assets.write( './out' ).then( () => {
-        console.log( 'code:\n', code );
-        //   assert.equal( 'test', 'test' );
-        //   return true;
-        // });
+        return ext.write( output ).then( () => {
+           return true;
+        });
       });
+    });
+
+    it( 'should bundle as expected', () => {
 
     });
   });

@@ -8,7 +8,7 @@ describe( 'external', () => {
   });
 
   it( 'should expose base processors', ()=> {
-    expect( external.info ).to.be.a( 'function' );
+    expect( external.ref ).to.be.a( 'function' );
     expect( external.alias ).to.be.a( 'function' );
   });
 

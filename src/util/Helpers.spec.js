@@ -1,5 +1,3 @@
-/* global expect */
-/* global sinon */
 import * as Helpers from './Helpers';
 
 describe( 'Helpers', () => {

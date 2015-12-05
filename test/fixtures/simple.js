@@ -1,6 +1,6 @@
-import { src as aPath } from 'info( ./modules/a )';
-import { src as bPath } from 'info( ./modules/b )';
-import { src as cPath } from 'info( ./modules/c )';
+import { src as aPath } from 'ref( ./modules/a )';
+import { src as bPath } from 'ref( ./modules/b )';
+import { src as cPath } from 'ref( ./modules/c )';
 
 console.log( 'a:', aPath );
 console.log( 'b:', bPath );

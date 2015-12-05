@@ -4,15 +4,15 @@ import { parse } from './util/AST';
 import { requireOptions } from './util/Helpers';
 
 import alias from './processors/alias';
-import info from './processors/info';
+import ref from './processors/ref';
 
 const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
 
 function ensureProcessors( processors ) {
   //console.log( 'ensureProcessors', processors );
   processors = processors || {};
-  if ( !processors.info ) {
-    processors.info = info();
+  if ( !processors.ref ) {
+    processors.ref = ref();
   }
   return processors;
 }
@@ -73,9 +73,8 @@ function external( options = {}) {
       if ( parsed && parsed.processors.every( type => processors[ type ] ) ) {
         const dir = dirname( importer );
         const path = relative( process.cwd(), resolve( dir, parsed.src.trim() ) );
-        const resolvedId = parsed.processors.reduce( ( value, current ) => {
-          return `${current}(${value})`;
-        }, path );
+        const resolvedId = parsed.processors
+        .reduce( ( value, current ) => `${current}(${value})`, path );
 
         //Console.log('  resolvedId', resolvedId);
         return resolvedId;
@@ -95,13 +94,10 @@ function external( options = {}) {
 
       const loadResult = processList
         .map( type => processors[ type ] )
-        .reduce( ( value, processor ) => {
-          return Promise.all([ value ]).then( v => {
-
-            //Console.log('--- resolved', v );
-            return processor.process( v[ 0 ] );
-          });
-        }, resolved );
+        .reduce(
+          ( value, processor ) => Promise.all([ value ]).then( v => processor.process( v[ 0 ] ) ),
+          resolved
+        );
 
       loadResult.then( value => {
         if ( value.write ) {
@@ -119,6 +115,6 @@ function external( options = {}) {
 }
 
 external.alias = alias;
-external.info = info;
+external.ref = ref;
 
 export default external;
