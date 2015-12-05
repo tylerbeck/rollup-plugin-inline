@@ -1,0 +1,46 @@
+{
+  "name": "rollup-plugin-external",
+  "version": "0.0.1",
+  "description": "plugin for processing and including static assets via imports using rollup",
+  "main": "dist/rollup-plugin-external.cjs.js",
+  "jsnext:main": "dist/rollup-plugin-external.es6.js",
+  "scripts": {
+    "test": "sh test/helpers/test.sh",
+    "build": "rollup -c -f cjs -o dist/rollup-plugin-external.cjs.js && rollup -c -f es6 -o dist/rollup-plugin-external.es6.js",
+    "prebuild": "rm -rf dist/*",
+    "prepublish": "npm test"
+  },
+  "keywords": [
+    "rollup-plugin",
+    "static",
+    "asset bundler",
+    "asset processer",
+    "asset"
+  ],
+  "author": "Tyler Beck",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylerbeck/rollup-plugin-external.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.3.13",
+    "babel-eslint": "^4.1.3",
+    "babel-preset-es2015": "^6.3.13",
+    "chai": "^3.4.0",
+    "chai-as-promised": "^5.1.0",
+    "eslint": "^1.7.3",
+    "eslint-plugin-babel": "^2.1.1",
+    "mocha": "^2.3.4",
+    "rollup": "^0.20.5",
+    "rollup-plugin-babel": "^1.0.0",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0",
+    "source-map-support": "^0.3.3"
+  },
+  "dependencies": {
+    "acorn": "^2.6.4",
+    "fs-extra-promise": "^0.3.1",
+    "rollup-pluginutils": "^1.2.0"
+  }
+}

@@ -1,0 +1,28 @@
+{
+    "preset": "jquery",
+    "esnext": true,
+    "requireSemicolons": true,
+    "requireSpacesInsideParentheses": {
+        "all": true,
+        "ignoreParenthesizedExpression": true,
+        "except": [ "{", "}", "[", "]", "function", "\"" ]
+    },
+    "disallowSpacesInsideParentheses": {
+        "only": [ "{", "}", "[", "]", "function" ]
+    },
+    "disallowSpacesInCallExpression": true,
+    "requirePaddingNewLinesBeforeLineComments": null,
+    "requireSpaceAfterLineComment": null,
+    "disallowMultipleLineBreaks": null,
+    "requireCapitalizedComments": null,
+    "validateIndentation": null,
+    "validateCommentPosition": { "position": "above" },
+    "maximumLineLength": {
+            "value": 100,
+            "tabSize": 4,
+            "allExcept": ["urlComments", "regex"]
+    },
+    "validateQuoteMarks": "'",
+    "requireTemplateStrings": { "allExcept": ["stringConcatenation"] },
+    "requireSpaceBeforeObjectValues": true
+}
