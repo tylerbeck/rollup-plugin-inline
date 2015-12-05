@@ -24,5 +24,8 @@
     },
     "validateQuoteMarks": "'",
     "requireTemplateStrings": { "allExcept": ["stringConcatenation"] },
-    "requireSpaceBeforeObjectValues": true
+    "requireSpaceBeforeObjectValues": true,
+    "requireArrowFunctions": true,
+    "disallowParenthesesAroundArrowParam": true,
+    "requireShorthandArrowFunctions": true
 }
