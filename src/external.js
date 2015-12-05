@@ -58,6 +58,7 @@ function expandProcessors( list, processors ) {
 
 function external( options = {}) {
   requireOptions( options, 'processors' );
+
   const processors = ensureProcessors( options.processors );
   const types = Object.keys( processors );
 
@@ -67,7 +68,6 @@ function external( options = {}) {
 
   return {
     resolveId( importee, importer ) {
-
       //Console.log( 'resolveId:', importee, importer );
       const parsed = parseImport( importee );
       if ( parsed && parsed.processors.every( type => processors[ type ] ) ) {
@@ -85,7 +85,6 @@ function external( options = {}) {
     },
 
     load( id ) {
-
       //Console.log( 'load:', id );
       const resolved = parseImport( id );
       if ( !resolved || !filter( id ) ) {
