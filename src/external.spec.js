@@ -1,4 +1,6 @@
 import external from './external';
+import { MISSING_OPTIONS } from './Errors';
+
 
 const passThrough = () => ({ process: obj => obj });
 
@@ -14,7 +16,6 @@ describe( 'external', () => {
 
   describe( '.call', ()=> {
     const construct = options => () => external( options );
-    const expectedOptionsError = 'MISSING_OPTIONS';
     const invalidOptions = {
     };
     const validOptions = {
@@ -26,7 +27,7 @@ describe( 'external', () => {
     it( 'should fail without required options', ()=> {
       expect( construct() ).to.throw( expectedOptionsError );
       expect( construct({}) ).to.throw( expectedOptionsError );
-      expect( construct( invalidOptions ) ).to.throw( expectedOptionsError );
+      expect( construct( invalidOptions ) ).to.throw( MISSING_OPTIONS );
       expect( construct( validOptions ) ).not.to.throw( Error );
     });
 

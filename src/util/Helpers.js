@@ -1,4 +1,5 @@
 import { createHash } from 'crypto';
+import { MISSING_OPTIONS } from './Errors';
 
 export function chainFunctions( fnList, ...initialArgs ) {
   return fnList.reduce( ( args, fn ) => {
@@ -27,19 +28,17 @@ export function hasAttribute( obj, attrs ) {
 }
 
 export function hasAttributes( obj, ...list ) {
-  return Array.from( list ).every( attr => {
-    return hasAttribute( obj, attr );
-  });
+  return Array.from( list ).every( attr => hasAttribute( obj, attr ) );
 }
 
 export function requireOptions( options, ...required ) {
   if ( !hasAttributes( options, ...required ) ) {
-    throw new Error( 'MISSING_OPTIONS' );
+    throw new Error( MISSING_OPTIONS );
   }
 }
 
 export function resolveWith( ...args ) {
-  return new Promise( ( resolve ) => {
+  return new Promise( resolve => {
     setTimeout( () => {
       resolve( ...args );
     }, 0 );
