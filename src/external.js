@@ -47,9 +47,12 @@ function expandProcessors( list, processors ) {
     }
     if ( processor.resolve && typeof processor.resolve === 'function' ) {
       insert = processor.resolve();
-      if ( insert.indexOf( name ) < 0 ) {
-        insert = expandProcessors( insert );
-      }
+      insert = insert.reduce(
+        (ins, current) => ins.concat(
+          current === name ? [ name ] : expandProcessors([ current ], processors )
+        ),
+        []
+      );
     }
     expanded = expanded.concat( insert );
   });
@@ -62,13 +65,13 @@ function external( options = {}) {
   const processors = ensureProcessors( options.processors );
   const types = Object.keys( processors );
 
-  //Console.log('registered processors:', types);
+  //console.log('registered processors:', types);
   const filter = createFilter( options.include, options.exclude );
   const writes = {};
 
   return {
     resolveId( importee, importer ) {
-      //Console.log( 'resolveId:', importee, importer );
+      //console.log( 'resolveId:', importee, importer );
       const parsed = parseImport( importee );
       if ( parsed && parsed.processors.every( type => processors[ type ] ) ) {
         const dir = dirname( importer );
@@ -76,7 +79,7 @@ function external( options = {}) {
         const resolvedId = parsed.processors
         .reduce( ( value, current ) => `${current}(${value})`, path );
 
-        //Console.log('  resolvedId', resolvedId);
+        //console.log('  resolvedId', resolvedId);
         return resolvedId;
       }
 
@@ -84,19 +87,23 @@ function external( options = {}) {
     },
 
     load( id ) {
-      //Console.log( 'load:', id );
+      //console.log( 'load:', id );
       const resolved = parseImport( id );
       if ( !resolved || !filter( id ) ) {
         return null;
       }
 
       const processList = expandProcessors( resolved.processors, processors );
-
+      //console.log( 'processList:', processList );
       const loadResult = processList
         .map( type => processors[ type ] )
         .reduce(
           ( value, processor ) => Promise.all([ value ]).then( v => processor.process( v[ 0 ] ) ),
           resolved
+        )
+        .then(
+          value => !value.code ? processors.ref.process( value ) : value,
+          e => { throw e; }
         );
 
       loadResult.then( value => {

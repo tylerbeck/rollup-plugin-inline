@@ -1,4 +1,4 @@
-import { requireOptions } from './util/Helpers';
+import { requireOptions } from '../util/Helpers';
 
 export default function( options = {}) {
   requireOptions( options, 'processors' );

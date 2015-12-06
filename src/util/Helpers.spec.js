@@ -1,4 +1,5 @@
 import * as Helpers from './Helpers';
+import { MISSING_OPTIONS } from './Errors';
 
 describe( 'Helpers', () => {
 
@@ -107,7 +108,7 @@ describe( 'Helpers', () => {
     it( 'should throw error if options are missing', () => {
       const list = [ 'falsey', 'nested.truthy', 'nested.noDef' ];
       expect( Helpers.requireOptions.bind( null, obj, ...list ) )
-        .to.throw( 'MISSING_OPTIONS' );
+        .to.throw( MISSING_OPTIONS );
     });
     it( 'should not throw error if options are set', () => {
       const list = [ 'falsey', 'nested.truthy', 'nested.nested.false' ];
