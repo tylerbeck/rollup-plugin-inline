@@ -134,10 +134,6 @@ describe( 'Helpers', () => {
 
   });
 
-  describe( '.objectExports', () => {
-
-  });
-
   describe( '.md5Hash', () => {
 
   });

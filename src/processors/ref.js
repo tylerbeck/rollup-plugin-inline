@@ -1,4 +1,4 @@
-import { objectExports } from '../util/Helpers';
+import { objectExports } from '../util/ProcessorHelpers';
 
 export default function( options = {}) {
 	const process = obj => {

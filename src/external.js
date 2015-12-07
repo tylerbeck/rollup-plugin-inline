@@ -4,7 +4,9 @@ import { parse } from './util/AST';
 import { requireOptions } from './util/Helpers';
 
 import alias from './processors/alias';
+import hash from './processors/hash';
 import ref from './processors/ref';
+import write from './processors/write';
 
 const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
 
@@ -28,9 +30,11 @@ function parseImport( statement ) {
   }
   if ( list.length ) {
     //console.log( '   ', list, statement );
+    const path = statement.trim();
     return {
       processors: list.reverse(),
-      src: statement.trim()
+      src: path,
+      path
     };
   }
 
@@ -121,6 +125,8 @@ function external( options = {}) {
   };
 }
 
+external.alias = alias;
+external.hash = hash;
 external.alias = alias;
 external.ref = ref;
 
