@@ -1,21 +1,25 @@
-import external from './external';
+import * as external from './external';
 import { MISSING_OPTIONS } from './util/Errors';
 
 
 const passThrough = () => ({ process: obj => obj });
 
-describe( 'external', () => {
-  it( 'should be a function', () => {
-    expect( external ).to.be.a( 'function' );
-  });
-
+describe( 'external processors', () => {
   it( 'should expose base processors', ()=> {
-    expect( external.ref ).to.be.a( 'function' );
     expect( external.alias ).to.be.a( 'function' );
+    expect( external.hash ).to.be.a( 'function' );
+    expect( external.ref ).to.be.a( 'function' );
+    expect( external.write ).to.be.a( 'function' );
+  });
+});
+
+describe( 'external.plugin', () => {
+  it( 'should be a function', () => {
+    expect( external.plugin ).to.be.a( 'function' );
   });
 
   describe( '.call', ()=> {
-    const construct = options => () => external( options );
+    const construct = options => () => external.plugin( options );
     const invalidOptions = {};
     let validOptions = {
       processors: {
@@ -42,7 +46,7 @@ describe( 'external', () => {
     describe( '[returned value]', ()=> {
       let plugin;
       before( () => {
-        plugin = external( validOptions );
+        plugin = external.plugin( validOptions );
       });
 
       it( 'should have the expected properties', () => {
@@ -82,12 +86,8 @@ describe( 'external', () => {
               'a': passThrough(),
               'b': passThrough(),
               'c': passThrough(),
-              'abc': external.alias({
-                processors: [ 'a', 'b', 'c' ]
-              }),
-              'd': external.alias({
-                processors: [ 'abc', 'd' ]
-              }),
+              'abc': external.alias( 'a', 'b', 'c' ),
+              'd': external.alias( 'abc', 'd' ),
               'ref': external.ref()
             }
           };
@@ -95,7 +95,7 @@ describe( 'external', () => {
           Object.keys( options.processors ).forEach( key => {
             spy[ key ] = sinon.spy( options.processors[ key ], 'process' );
           });
-          plugin = external( options );
+          plugin = external.plugin( options );
         });
 
         it( 'should return null for unmatched ids', () => {

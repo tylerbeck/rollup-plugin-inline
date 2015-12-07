@@ -13,9 +13,9 @@ const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
 function ensureProcessors( processors ) {
   //console.log( 'ensureProcessors', processors );
   processors = processors || {};
-  if ( !processors.ref ) {
-    processors.ref = ref();
-  }
+  processors.hash = processors.hash || hash();
+  processors.ref = processors.ref || ref();
+  processors.write = processors.write || write();
   return processors;
 }
 
@@ -63,7 +63,7 @@ function expandProcessors( list, processors ) {
   return expanded;
 }
 
-function external( options = {}) {
+export function plugin( options = {}) {
   requireOptions( options, 'processors' );
 
   const processors = ensureProcessors( options.processors );
@@ -125,9 +125,4 @@ function external( options = {}) {
   };
 }
 
-external.alias = alias;
-external.hash = hash;
-external.alias = alias;
-external.ref = ref;
-
-export default external;
+export { alias, hash, ref, write };

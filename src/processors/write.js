@@ -4,10 +4,7 @@ import { join } from  'path';
 export default function write( options = {}) {
 	return {
 		process( obj ) {
-      obj.write = path => {
-				const dest = join( path, obj.path );
-				return copyAsync( obj.src, dest );
-			};
+      obj.write = path => copyAsync( obj.src, join( path, obj.path ) );
       return obj;
     }
 	};

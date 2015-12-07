@@ -1,8 +1,7 @@
 import { requireOptions } from '../util/Helpers';
 
-export default function( options = {}) {
-  requireOptions( options, 'processors' );
-  const resolve = () => options.processors.reverse();
+export default function( ...processors ) {
+  const resolve = () => processors.reverse();
 	const process = obj => obj;
 	return { resolve, process };
 }

@@ -8,24 +8,13 @@ describe( 'alias processor', () => {
   });
 
   describe( '.call', () => {
-    const construct = options => () => alias( options );
-    const invalidOptions = {
-    };
-    const validOptions = {
-      processors: [ 'a', 'b', 'c' ]
-    };
-
-    it( 'should fail without required options', ()=> {
-      expect( construct() ).to.throw( MISSING_OPTIONS );
-      expect( construct({}) ).to.throw( MISSING_OPTIONS );
-      expect( construct( invalidOptions ) ).to.throw( MISSING_OPTIONS );
-      expect( construct( validOptions ) ).not.to.throw( Error );
-    });
+    const construct = params => () => alias( ...params );
+    const validParams = [ 'a', 'b', 'c' ];
 
     describe( '[returned value]', () => {
       let instance;
       before( () => {
-       instance = alias( validOptions );
+       instance = alias( ...validParams );
       });
 
       describe( '.resolve', () => {
@@ -34,7 +23,7 @@ describe( 'alias processor', () => {
         });
 
         it( 'should return list of aliased processors', () => {
-          expect( instance.resolve() ).to.eql( validOptions.processors.reverse() );
+          expect( instance.resolve() ).to.eql( validParams.reverse() );
         });
       });
 
