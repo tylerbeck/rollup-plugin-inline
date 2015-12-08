@@ -7,6 +7,7 @@ const passThrough = () => ({ process: obj => obj });
 describe( 'external processors', () => {
   it( 'should expose base processors', ()=> {
     expect( external.alias ).to.be.a( 'function' );
+    expect( external.copy ).to.be.a( 'function' );
     expect( external.hash ).to.be.a( 'function' );
     expect( external.ref ).to.be.a( 'function' );
     expect( external.write ).to.be.a( 'function' );
@@ -52,7 +53,7 @@ describe( 'external.plugin', () => {
       it( 'should have the expected properties', () => {
         expect( plugin.load ).to.be.a( 'function' );
         expect( plugin.resolveId ).to.be.a( 'function' );
-        expect( plugin.write ).to.be.a( 'function' );
+        expect( plugin.generate ).to.be.a( 'function' );
       });
 
       describe( '.resolveId', () => {
@@ -139,7 +140,7 @@ describe( 'external.plugin', () => {
         );
       });
 
-      describe( '.write', () => {
+      describe( '.generate', () => {
 
       });
     });

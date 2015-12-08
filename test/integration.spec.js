@@ -1,5 +1,6 @@
 import rollup from 'rollup';
-import fs from 'fs-extra-promise';
+import { removeSync, readFileSync } from 'fs-extra-promise';
+import { join } from 'path';
 import { plugin, alias, } from  '../src/external';
 
 process.chdir( __dirname );
@@ -7,15 +8,14 @@ const output = './test-out';
 
 describe( 'rollup-plugin-external', () => {
   describe( 'simple integration', () => {
-
+    let code;
     after( () => {
-      fs.removeSync( output );
+      removeSync( output );
     });
-
     before( () => {
       const external = plugin({
         processors: {
-          'asset': alias( 'write', 'ref' )
+          'asset': alias( 'copy', 'ref' )
         }
       });
       return rollup.rollup({
@@ -23,13 +23,20 @@ describe( 'rollup-plugin-external', () => {
         plugins: [ external ]
       }).then( bundle => {
         var generated = bundle.generate();
-        var code = generated.code;
-        return external.write( output ).then( () => true );
+        code = generated.code;
+        return external.generate( output ).then( () => true );
       });
     });
 
-    it( 'should bundle as expected', () => {
+    it( 'should write files as expected', () => {
+      expect( () => readFileSync( join( output, 'fixtures/assets/img.png' ) ) )
+      .not.to.throw( Error );
+    });
 
+    it( 'should generate expected code', () => {
+      expect( code ).to.contain( 'fixtures/modules/a.js' );
+      expect( code ).to.contain( 'fixtures/modules/b.js' );
+      expect( code ).to.contain( 'fixtures/modules/c.js' );
     });
   });
 });

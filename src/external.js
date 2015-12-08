@@ -4,6 +4,7 @@ import { parse } from './util/AST';
 import { requireOptions } from './util/Helpers';
 
 import alias from './processors/alias';
+import copy from './processors/copy';
 import hash from './processors/hash';
 import ref from './processors/ref';
 import write from './processors/write';
@@ -13,6 +14,7 @@ const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
 function ensureProcessors( processors ) {
   //console.log( 'ensureProcessors', processors );
   processors = processors || {};
+  processors.copy = processors.copy || copy();
   processors.hash = processors.hash || hash();
   processors.ref = processors.ref || ref();
   processors.write = processors.write || write();
@@ -63,7 +65,7 @@ function expandProcessors( list, processors ) {
   return expanded;
 }
 
-export function plugin( options = {}) {
+function plugin( options = {}) {
   requireOptions( options, 'processors' );
 
   const processors = ensureProcessors( options.processors );
@@ -71,7 +73,7 @@ export function plugin( options = {}) {
 
   //console.log('registered processors:', types);
   const filter = createFilter( options.include, options.exclude );
-  const writes = {};
+  const generates = {};
 
   return {
     resolveId( importee, importer ) {
@@ -111,18 +113,18 @@ export function plugin( options = {}) {
         );
 
       loadResult.then( value => {
-        if ( value.write ) {
-          writes[ id ] = value.write;
+        if ( value.generate ) {
+          generates[ id ] = value.generate;
         }
       });
 
       return loadResult;
     },
 
-    write( path = './' ) {
-      return Promise.all( Object.keys( writes ).map( id => writes[ id ]( path ) ) );
+    generate( path = './' ) {
+      return Promise.all( Object.keys( generates ).map( id => generates[ id ]( path ) ) );
     }
   };
 }
 
-export { alias, hash, ref, write };
+export { plugin, alias, copy, hash, ref, write };

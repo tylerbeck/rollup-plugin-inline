@@ -1,6 +1,6 @@
-import { src as aPath } from 'ref( ./modules/a )';
-import { src as bPath } from 'ref( ./modules/b )';
-import { src as cPath } from 'ref( ./modules/c )';
+import { src as aPath } from 'ref( ./modules/a.js )';
+import { src as bPath } from 'ref( ./modules/b.js )';
+import { src as cPath } from 'ref( copy( ./modules/c.js ))';
 import { path } from 'asset( ./assets/img.png )';
 
 console.log( 'a:', aPath );
