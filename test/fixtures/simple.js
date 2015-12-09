@@ -6,3 +6,4 @@ import { path } from 'asset( ./assets/img.png )';
 console.log( 'a:', aPath );
 console.log( 'b:', bPath );
 console.log( 'c:', cPath );
+console.log( 'img:', path );

@@ -1,23 +1,27 @@
 import rollup from 'rollup';
 import { removeSync, readFileSync } from 'fs-extra-promise';
 import { join } from 'path';
-import { plugin, alias, } from  '../src/external';
+import { plugin, alias } from  '../src/external';
 
 process.chdir( __dirname );
 const output = './test-out';
 
 describe( 'rollup-plugin-external', () => {
-  describe( 'simple integration', () => {
+
+
+  describe( 'simple integration test', () => {
     let code;
     after( () => {
-      removeSync( output );
+      //removeSync( output );
     });
     before( () => {
+
       const external = plugin({
         processors: {
           'asset': alias( 'copy', 'ref' )
         }
       });
+
       return rollup.rollup({
         entry: 'fixtures/simple.js',
         plugins: [ external ]
@@ -26,6 +30,7 @@ describe( 'rollup-plugin-external', () => {
         code = generated.code;
         return external.generate( output ).then( () => true );
       });
+
     });
 
     it( 'should write files as expected', () => {
@@ -38,5 +43,41 @@ describe( 'rollup-plugin-external', () => {
       expect( code ).to.contain( 'fixtures/modules/b.js' );
       expect( code ).to.contain( 'fixtures/modules/c.js' );
     });
+
+  });
+
+  describe.only( 'complex integration test', () => {
+
+    let code;
+
+    after( () => {
+      removeSync( output );
+    });
+
+    before( () => {
+
+      const external = plugin({
+        processors: {
+          'asset': alias( 'copy', 'ref' )
+        }
+      });
+
+      return rollup.rollup({
+        entry: 'fixtures/complex.js',
+        plugins: [ external ]
+      }).then( bundle => {
+        var generated = bundle.generate();
+        code = generated.code;
+        console.log( code );
+        return external.generate( output ).then( () => true );
+      });
+    });
+
+    it( 'should write files as expected', () => {
+    });
+
+    it( 'should generate expected code', () => {
+    });
+
   });
 });

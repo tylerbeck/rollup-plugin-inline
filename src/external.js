@@ -5,8 +5,10 @@ import { requireOptions } from './util/Helpers';
 
 import alias from './processors/alias';
 import copy from './processors/copy';
+import exec from './processors/exec';
 import hash from './processors/hash';
 import ref from './processors/ref';
+import roll from './processors/roll';
 import write from './processors/write';
 
 const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
@@ -14,10 +16,10 @@ const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
 function ensureProcessors( processors ) {
   //console.log( 'ensureProcessors', processors );
   processors = processors || {};
-  processors.copy = processors.copy || copy();
-  processors.hash = processors.hash || hash();
-  processors.ref = processors.ref || ref();
-  processors.write = processors.write || write();
+  const base = { copy, exec, hash, ref, write };
+  Object.keys( base ).forEach( key => {
+    processors[ key ] = processors[ key ] || base[ key ]();
+  });
   return processors;
 }
 
@@ -68,14 +70,15 @@ function expandProcessors( list, processors ) {
 function plugin( options = {}) {
   requireOptions( options, 'processors' );
 
-  const processors = ensureProcessors( options.processors );
+  let processors = ensureProcessors( options.processors );
+
   const types = Object.keys( processors );
 
   //console.log('registered processors:', types);
   const filter = createFilter( options.include, options.exclude );
   const generates = {};
 
-  return {
+  let externalInterface = {
     resolveId( importee, importer ) {
       //console.log( 'resolveId:', importee, importer );
       const parsed = parseImport( importee );
@@ -125,6 +128,11 @@ function plugin( options = {}) {
       return Promise.all( Object.keys( generates ).map( id => generates[ id ]( path ) ) );
     }
   };
+  //setup roll process with this as external plugin
+  processors.roll = processors.roll || roll({ externalInterface, format: 'es6' });
+  processors.rollcjs = processors.rollcjs || roll({ externalInterface, format: 'cjs' });
+
+  return externalInterface;
 }
 
 export { plugin, alias, copy, hash, ref, write };
