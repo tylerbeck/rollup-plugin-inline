@@ -7,6 +7,7 @@ import alias from './processors/alias';
 import copy from './processors/copy';
 import exec from './processors/exec';
 import hash from './processors/hash';
+import read from './processors/read';
 import ref from './processors/ref';
 import roll from './processors/roll';
 import write from './processors/write';
@@ -16,7 +17,7 @@ const matchId = /^\s*([a-z0-9_-]+)\s*\((.*)\)\s*$/i;
 function ensureProcessors( processors ) {
   //console.log( 'ensureProcessors', processors );
   processors = processors || {};
-  const base = { copy, exec, hash, ref, write };
+  const base = { copy, exec, hash, read, ref, write };
   Object.keys( base ).forEach( key => {
     processors[ key ] = processors[ key ] || base[ key ]();
   });
@@ -68,7 +69,6 @@ function expandProcessors( list, processors ) {
 }
 
 function plugin( options = {}) {
-  requireOptions( options, 'processors' );
 
   let processors = ensureProcessors( options.processors );
 

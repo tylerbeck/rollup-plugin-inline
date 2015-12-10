@@ -1,4 +1,5 @@
-import { filterKeys } from './Helpers.js';
+import { filterKeys, hasAttributes } from './Helpers.js';
+import { MISSING_ATTR } from './Errors';
 
 export function objectExports( obj, ...filter ) {
   const filters = [ 'code', 'ast', 'generate', 'processors' ].concat( filter );
@@ -9,4 +10,10 @@ export function objectExports( obj, ...filter ) {
       return exports;
     }, [ `export default ${ JSON.stringify( filterKeys( obj, ...filters ) ) };` ])
     .join( '\n' );
+}
+
+export function verifyInputProperties( obj, ...required ) {
+  if ( !hasAttributes( obj, ...required ) ) {
+    throw new Error( MISSING_ATTR );
+  }
 }

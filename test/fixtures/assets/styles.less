@@ -1,0 +1,13 @@
+@default-color: #BBB;
+
+a {
+  &:href {
+    color: @default-color;
+  }
+  &:hover {
+    color: lighten( @default-color, 15% );
+  }
+  &:visited {
+    color: darken( @default-color, 15% );
+  }
+}

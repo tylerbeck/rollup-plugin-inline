@@ -1,2 +1,3 @@
-export const MISSING_OPTIONS = 'missing required options';
-export const INVALID_PARAMETER = 'invalid parameter value';
+export const MISSING_ATTR = 'Missing required attributes';
+export const MISSING_OPTIONS = 'Missing required options';
+export const INVALID_PARAMETER = 'Invalid parameter value';

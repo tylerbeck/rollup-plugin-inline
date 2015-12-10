@@ -1,12 +1,13 @@
 import rollup from 'rollup';
 import { removeSync, readFileSync } from 'fs-extra-promise';
-import { join } from 'path';
+import { join, basename } from 'path';
 import { plugin, alias } from  '../src/external';
+import less from 'less';
 
 process.chdir( __dirname );
 const output = './test-out';
 
-describe( 'rollup-plugin-external', () => {
+describe.skip( 'rollup-plugin-external', () => {
 
 
   describe( 'simple integration test', () => {
@@ -46,7 +47,7 @@ describe( 'rollup-plugin-external', () => {
 
   });
 
-  describe.only( 'complex integration test', () => {
+  describe( 'complex integration test', () => {
 
     let code;
 
@@ -80,4 +81,48 @@ describe( 'rollup-plugin-external', () => {
     });
 
   });
+
+  describe( 'process integration test', () => {
+
+    let code;
+
+    after( () => {
+      //removeSync( output );
+    });
+
+    before( () => {
+
+      const external = plugin({
+        processors: {
+          'less': {
+            resolve: () => [ 'read', 'less', 'write', 'ref' ],
+            process: obj => less.render( obj.contents )
+                  .then( output => {
+                    obj.path = 'css/styles.css';
+                    obj.contents = output.css;
+                    return obj;
+                  })
+          }
+        }
+      });
+
+      return rollup.rollup({
+        entry: 'fixtures/process.js',
+        plugins: [ external ]
+      }).then( bundle => {
+        var generated = bundle.generate();
+        code = generated.code;
+        console.log( code );
+        return external.generate( output ).then( () => true );
+      });
+    });
+
+    it( 'should write files as expected', () => {
+    });
+
+    it( 'should generate expected code', () => {
+    });
+
+  });
+
 });

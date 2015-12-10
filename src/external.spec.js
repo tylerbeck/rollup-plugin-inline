@@ -21,8 +21,7 @@ describe( 'external.plugin', () => {
 
   describe( '.call', ()=> {
     const construct = options => () => external.plugin( options );
-    const invalidOptions = {};
-    let validOptions = {
+    let options = {
       processors: {
         'a': passThrough(),
         'b': passThrough(),
@@ -37,17 +36,11 @@ describe( 'external.plugin', () => {
       }
     };
 
-    it( 'should fail without required options', ()=> {
-      expect( construct() ).to.throw( MISSING_OPTIONS );
-      expect( construct({}) ).to.throw( MISSING_OPTIONS );
-      expect( construct( invalidOptions ) ).to.throw( MISSING_OPTIONS );
-      expect( construct( validOptions ) ).not.to.throw( Error );
-    });
 
     describe( '[returned value]', ()=> {
       let plugin;
       before( () => {
-        plugin = external.plugin( validOptions );
+        plugin = external.plugin( options );
       });
 
       it( 'should have the expected properties', () => {
