@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-inline",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "plugin for processing and including static assets via imports using rollup",
   "main": "dist/rollup-plugin-inline.cjs.js",
   "jsnext:main": "dist/rollup-plugin-inline.es6.js",
