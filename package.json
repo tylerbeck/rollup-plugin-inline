@@ -44,5 +44,10 @@
     "fs-extra-promise": "^0.3.1",
     "rollup": "^0.20.5",
     "rollup-pluginutils": "^1.2.0"
-  }
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ]
 }
