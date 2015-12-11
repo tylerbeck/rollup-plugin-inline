@@ -6,6 +6,7 @@
   "jsnext:main": "dist/rollup-plugin-external.es6.js",
   "scripts": {
     "test": "sh test/helpers/test.sh",
+    "pretest": "npm run build",
     "build": "rollup -c -f cjs -o dist/rollup-plugin-external.cjs.js && rollup -c -f es6 -o dist/rollup-plugin-external.es6.js",
     "prebuild": "rm -rf dist/*",
     "prepublish": "npm test"
