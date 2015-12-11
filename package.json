@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-external",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "plugin for processing and including static assets via imports using rollup",
   "main": "dist/rollup-plugin-external.cjs.js",
   "jsnext:main": "dist/rollup-plugin-external.es6.js",
