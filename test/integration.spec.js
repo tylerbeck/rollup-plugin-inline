@@ -7,9 +7,7 @@ import less from 'less';
 process.chdir( __dirname );
 const output = './test-out';
 
-describe.skip( 'rollup-plugin-external', () => {
-
-
+describe( 'rollup-plugin-external', () => {
   describe( 'simple integration test', () => {
     let code;
     after( () => {
@@ -47,7 +45,7 @@ describe.skip( 'rollup-plugin-external', () => {
 
   });
 
-  describe( 'complex integration test', () => {
+  describe.skip( 'complex integration test', () => {
 
     let code;
 
@@ -82,7 +80,7 @@ describe.skip( 'rollup-plugin-external', () => {
 
   });
 
-  describe( 'process integration test', () => {
+  describe.skip( 'process integration test', () => {
 
     let code;
 
