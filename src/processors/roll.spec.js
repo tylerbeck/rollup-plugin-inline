@@ -1,5 +1,5 @@
 import roll from './roll';
-import { plugin } from '../external';
+import { plugin } from '../inline';
 
 describe( 'roll processor', () => {
 
@@ -9,7 +9,7 @@ describe( 'roll processor', () => {
 
   describe( '.call', () => {
     describe( '[returned value]', () => {
-      let instance = roll({ externalInterface: plugin() });
+      let instance = roll({ inlineInterface: plugin() });
 
       describe( '.process', () => {
         it( 'should be a function', () => {

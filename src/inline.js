@@ -78,7 +78,7 @@ function plugin( options = {}) {
   const filter = createFilter( options.include, options.exclude );
   const generates = {};
 
-  let externalInterface = {
+  let inlineInterface = {
     resolveId( importee, importer ) {
       //console.log( 'resolveId:', importee, importer );
       const parsed = parseImport( importee );
@@ -128,11 +128,11 @@ function plugin( options = {}) {
       return Promise.all( Object.keys( generates ).map( id => generates[ id ]( path ) ) );
     }
   };
-  //setup roll process with this as external plugin
-  processors.roll = processors.roll || roll({ externalInterface, format: 'es6' });
-  processors.rollcjs = processors.rollcjs || roll({ externalInterface, format: 'cjs' });
+  //setup roll process with this as inline plugin
+  processors.roll = processors.roll || roll({ inlineInterface, format: 'es6' });
+  processors.rollcjs = processors.rollcjs || roll({ inlineInterface, format: 'cjs' });
 
-  return externalInterface;
+  return inlineInterface;
 }
 
 export { plugin, alias, copy, hash, ref, write };

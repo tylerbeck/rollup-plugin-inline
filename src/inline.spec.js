@@ -1,38 +1,38 @@
-import * as external from './external';
+import * as inline from './inline';
 import { MISSING_OPTIONS } from './util/Errors';
 
 
 const passThrough = () => ({ process: obj => obj });
 
-describe( 'external processors', () => {
+describe( 'inline processors', () => {
   it( 'should expose base processors', ()=> {
-    expect( external.alias ).to.be.a( 'function' );
-    expect( external.copy ).to.be.a( 'function' );
-    expect( external.hash ).to.be.a( 'function' );
-    expect( external.ref ).to.be.a( 'function' );
-    expect( external.write ).to.be.a( 'function' );
+    expect( inline.alias ).to.be.a( 'function' );
+    expect( inline.copy ).to.be.a( 'function' );
+    expect( inline.hash ).to.be.a( 'function' );
+    expect( inline.ref ).to.be.a( 'function' );
+    expect( inline.write ).to.be.a( 'function' );
   });
 });
 
-describe( 'external.plugin', () => {
+describe( 'inline.plugin', () => {
   it( 'should be a function', () => {
-    expect( external.plugin ).to.be.a( 'function' );
+    expect( inline.plugin ).to.be.a( 'function' );
   });
 
   describe( '.call', ()=> {
-    const construct = options => () => external.plugin( options );
+    const construct = options => () => inline.plugin( options );
     let options = {
       processors: {
         'a': passThrough(),
         'b': passThrough(),
         'c': passThrough(),
-        'abc': external.alias({
+        'abc': inline.alias({
           processors: [ 'a', 'b', 'c' ]
         }),
-        'd': external.alias({
+        'd': inline.alias({
           processors: [ 'abc', 'd' ]
         }),
-        'ref': external.ref()
+        'ref': inline.ref()
       }
     };
 
@@ -40,7 +40,7 @@ describe( 'external.plugin', () => {
     describe( '[returned value]', ()=> {
       let plugin;
       before( () => {
-        plugin = external.plugin( options );
+        plugin = inline.plugin( options );
       });
 
       it( 'should have the expected properties', () => {
@@ -80,16 +80,16 @@ describe( 'external.plugin', () => {
               'a': passThrough(),
               'b': passThrough(),
               'c': passThrough(),
-              'abc': external.alias( 'a', 'b', 'c' ),
-              'd': external.alias( 'abc', 'd' ),
-              'ref': external.ref()
+              'abc': inline.alias( 'a', 'b', 'c' ),
+              'd': inline.alias( 'abc', 'd' ),
+              'ref': inline.ref()
             }
           };
           spy = {};
           Object.keys( options.processors ).forEach( key => {
             spy[ key ] = sinon.spy( options.processors[ key ], 'process' );
           });
-          plugin = external.plugin( options );
+          plugin = inline.plugin( options );
         });
 
         it( 'should return null for unmatched ids', () => {

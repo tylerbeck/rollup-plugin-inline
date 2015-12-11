@@ -8,7 +8,7 @@ export default function roll( options = {}) {
       verifyInputProperties( obj, 'src' );
       return rollup.rollup({
         entry: obj.src,
-        plugins: [ options.externalInterface ]
+        plugins: [ options.inlineInterface ]
       }).then( bundle => {
         let generated = bundle.generate({ format: options.format });
         obj.code = generated.code;

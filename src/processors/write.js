@@ -7,10 +7,12 @@ export default function write( options = {}) {
 	return {
 		process( obj ) {
       verifyInputProperties( obj, 'contents', 'path' );
-      obj.generate = path => {
-        console.log( 'writing to:', join( path, obj.path ) );
-        return outputFileAsync( join( path, obj.path ), obj.contents, options.encoding );
-      };
+      const objPath = obj.path;
+      const contents = obj.contents;
+      const encoding = options.encoding;
+      if ( contents ) {
+        obj.generate = path => outputFileAsync( join( path, objPath ), contents, encoding );
+      }
       return obj;
     }
 	};

@@ -6,7 +6,9 @@ export default function copy( options = {}) {
 	return {
 		process( obj ) {
       verifyInputProperties( obj, 'src', 'path' );
-      obj.generate = path => copyAsync( obj.src, join( path, obj.path ) );
+      const src = obj.src;
+      const objPath = obj.path;
+      obj.generate = path => copyAsync( src, join( path, objPath ) );
       return obj;
     }
 	};

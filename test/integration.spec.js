@@ -1,13 +1,13 @@
 import rollup from 'rollup';
 import { removeSync, readFileSync } from 'fs-extra-promise';
 import { join, basename } from 'path';
-import { plugin, alias } from  '../src/external';
+import { plugin, alias } from  '../src/inline';
 import less from 'less';
 
 process.chdir( __dirname );
 const output = './test-out';
 
-describe( 'rollup-plugin-external', () => {
+describe( 'rollup-plugin-inline', () => {
   describe( 'simple integration test', () => {
     let code;
     after( () => {
@@ -15,7 +15,7 @@ describe( 'rollup-plugin-external', () => {
     });
     before( () => {
 
-      const external = plugin({
+      const inline = plugin({
         processors: {
           'asset': alias( 'copy', 'ref' )
         }
@@ -23,11 +23,11 @@ describe( 'rollup-plugin-external', () => {
 
       return rollup.rollup({
         entry: 'fixtures/simple.js',
-        plugins: [ external ]
+        plugins: [ inline ]
       }).then( bundle => {
         var generated = bundle.generate();
         code = generated.code;
-        return external.generate( output ).then( () => true );
+        return inline.generate( output ).then( () => true );
       });
 
     });
@@ -55,7 +55,7 @@ describe( 'rollup-plugin-external', () => {
 
     before( () => {
 
-      const external = plugin({
+      const inline = plugin({
         processors: {
           'asset': alias( 'copy', 'ref' )
         }
@@ -63,12 +63,12 @@ describe( 'rollup-plugin-external', () => {
 
       return rollup.rollup({
         entry: 'fixtures/complex.js',
-        plugins: [ external ]
+        plugins: [ inline ]
       }).then( bundle => {
         var generated = bundle.generate();
         code = generated.code;
         console.log( code );
-        return external.generate( output ).then( () => true );
+        return inline.generate( output ).then( () => true );
       });
     });
 
@@ -90,7 +90,7 @@ describe( 'rollup-plugin-external', () => {
 
     before( () => {
 
-      const external = plugin({
+      const inline = plugin({
         processors: {
           'less': {
             resolve: () => [ 'read', 'less', 'write', 'ref' ],
@@ -106,12 +106,12 @@ describe( 'rollup-plugin-external', () => {
 
       return rollup.rollup({
         entry: 'fixtures/process.js',
-        plugins: [ external ]
+        plugins: [ inline ]
       }).then( bundle => {
         var generated = bundle.generate();
         code = generated.code;
         console.log( code );
-        return external.generate( output ).then( () => true );
+        return inline.generate( output ).then( () => true );
       });
     });
 
