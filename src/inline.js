@@ -24,7 +24,7 @@ function ensureProcessors( processors ) {
   return processors;
 }
 
-function parseImport( statement ) {
+function parseImport( statement, root = '' ) {
   //console.log( 'parseImport:', statement );
   let list = [];
   while ( matchId.test( statement ) ) {
@@ -36,10 +36,11 @@ function parseImport( statement ) {
   if ( list.length ) {
     //console.log( '   ', list, statement );
     const path = statement.trim();
+    //console.log( 'rel-path', relative( root, path ) );
     return {
       processors: list.reverse(),
       src: path,
-      path
+      path: relative( root, path )
     };
   }
 
@@ -69,14 +70,15 @@ function expandProcessors( list, processors ) {
 }
 
 function plugin( options = {}) {
-
+  options.dest = options.dest || './';
+  options.root = options.root || '';
   let processors = ensureProcessors( options.processors );
 
   const types = Object.keys( processors );
 
   //console.log('registered processors:', types);
   const filter = createFilter( options.include, options.exclude );
-  const generates = {};
+  const writeFns = {};
 
   let inlineInterface = {
     resolveId( importee, importer ) {
@@ -97,11 +99,10 @@ function plugin( options = {}) {
 
     load( id ) {
       //console.log( 'load:', id );
-      const resolved = parseImport( id );
+      const resolved = parseImport( id, options.root );
       if ( !resolved || !filter( id ) ) {
         return null;
       }
-
       const processList = expandProcessors( resolved.processors, processors );
       //console.log( 'processList:', processList );
       const loadResult = processList
@@ -116,23 +117,24 @@ function plugin( options = {}) {
         );
 
       loadResult.then( value => {
-        if ( value.generate ) {
-          generates[ id ] = value.generate;
+        if ( value.write ) {
+          writeFns[ id ] = value.write;
         }
       });
 
       return loadResult;
     },
 
-    generate( path = './' ) {
-      return Promise.all( Object.keys( generates ).map( id => generates[ id ]( path ) ) );
+    write() {
+      return Promise.all( Object.keys( writeFns ).map( id => writeFns[ id ]( options.dest ) ) );
     }
   };
   //setup roll process with this as inline plugin
   processors.roll = processors.roll || roll({ inlineInterface, format: 'es6' });
   processors.rollcjs = processors.rollcjs || roll({ inlineInterface, format: 'cjs' });
+  processors.rolliife = processors.rolliife || roll({ inlineInterface, format: 'iife' });
 
   return inlineInterface;
 }
 
-export { plugin, alias, copy, hash, ref, write };
+export { plugin, alias, copy, hash, read, ref, roll, write };

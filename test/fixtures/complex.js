@@ -1,2 +1,3 @@
 import test from 'ref( exec( ./modules/compound.js ) )';
-console.log( test );
+import {path} from 'asset( ./assets/img.png )';
+console.log( test, path );

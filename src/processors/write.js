@@ -11,7 +11,7 @@ export default function write( options = {}) {
       const contents = obj.contents;
       const encoding = options.encoding;
       if ( contents ) {
-        obj.generate = path => outputFileAsync( join( path, objPath ), contents, encoding );
+        obj.write = path => outputFileAsync( join( path, objPath ), contents, encoding );
       }
       return obj;
     }

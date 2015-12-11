@@ -8,7 +8,7 @@ export default function copy( options = {}) {
       verifyInputProperties( obj, 'src', 'path' );
       const src = obj.src;
       const objPath = obj.path;
-      obj.generate = path => copyAsync( src, join( path, objPath ) );
+      obj.write = path => copyAsync( src, join( path, objPath ) );
       return obj;
     }
 	};

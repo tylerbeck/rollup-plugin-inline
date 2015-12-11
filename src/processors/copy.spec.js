@@ -19,13 +19,13 @@ describe( 'copy processor', () => {
           expect( instance.process ).to.be.a( 'function' );
         });
 
-        it( 'should set the `generate` attribute on the target object', () => {
+        it( 'should set the `write` attribute on the target object', () => {
           let test = {
             path: 'asset/test/out.png',
             src: './fixtures/assets/img.png'
           };
           instance.process( test );
-          expect( test.generate ).to.be.a( 'function' );
+          expect( test.write ).to.be.a( 'function' );
         });
 
         it( 'should copy file from src to path', () => {
@@ -34,7 +34,7 @@ describe( 'copy processor', () => {
             src: './fixtures/assets/img.png'
           };
           instance.process( test );
-          return test.generate( output ).then( () => {
+          return test.write( output ).then( () => {
             expect( () => readFileSync( join( output, test.path ) ) ).not.to.throw( Error );
             removeSync( output );
             return true;

@@ -14,6 +14,6 @@ export function objectExports( obj, ...filter ) {
 
 export function verifyInputProperties( obj, ...required ) {
   if ( !hasAttributes( obj, ...required ) ) {
-    throw new Error( MISSING_ATTR );
+    throw new Error( `${MISSING_ATTR}: ${required.join( ',' )}` );
   }
 }

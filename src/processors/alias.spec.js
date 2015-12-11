@@ -23,7 +23,7 @@ describe( 'alias processor', () => {
         });
 
         it( 'should return list of aliased processors', () => {
-          expect( instance.resolve() ).to.eql( validParams.reverse() );
+          expect( instance.resolve() ).to.eql( validParams );
         });
       });
 

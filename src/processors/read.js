@@ -6,8 +6,9 @@ export default function read( options = {}) {
 	return {
 		process( obj ) {
       verifyInputProperties( obj, 'src' );
+      const src = obj.src;
       return readFileAsync( obj.src, options.encoding ).then( str => {
-        console.log( 'readFileAsync:', str );
+        //console.log( 'readFileAsync:', str );
         obj.contents = str;
         return obj;
       });

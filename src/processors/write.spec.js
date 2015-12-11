@@ -19,23 +19,23 @@ describe( 'write processor', () => {
           expect( instance.process ).to.be.a( 'function' );
         });
 
-        it( 'should set the `generate` attribute on the target object', () => {
+        it( 'should set the `write` attribute on the target object', () => {
           let test = {
             path: 'asset/test/out.txt',
             contents: 'Hello World!'
           };
           instance.process( test );
-          expect( test.generate ).to.be.a( 'function' );
+          expect( test.write ).to.be.a( 'function' );
         });
 
-        describe( 'obj.generate', () => {
+        describe( 'obj.write', () => {
           it( 'should write object contents to path', () => {
             let test = {
               path: 'asset/test/out.txt',
               contents: 'Hello World!'
             };
             instance.process( test );
-            return test.generate( output ).then( () => {
+            return test.write( output ).then( () => {
               expect( () => readFileSync( join( output, test.path ) ) ).not.to.throw( Error );
               let file = readFileSync( join( output, test.path ), 'utf8' );
               expect( file ).to.equal( test.contents );

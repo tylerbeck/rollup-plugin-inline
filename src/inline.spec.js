@@ -46,7 +46,7 @@ describe( 'inline.plugin', () => {
       it( 'should have the expected properties', () => {
         expect( plugin.load ).to.be.a( 'function' );
         expect( plugin.resolveId ).to.be.a( 'function' );
-        expect( plugin.generate ).to.be.a( 'function' );
+        expect( plugin.write ).to.be.a( 'function' );
       });
 
       describe( '.resolveId', () => {
@@ -133,7 +133,7 @@ describe( 'inline.plugin', () => {
         );
       });
 
-      describe( '.generate', () => {
+      describe( '.write', () => {
 
       });
     });

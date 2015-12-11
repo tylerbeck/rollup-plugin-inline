@@ -8,10 +8,10 @@ process.chdir( __dirname );
 const output = './test-out';
 
 describe( 'rollup-plugin-inline', () => {
-  describe( 'simple integration test', () => {
+  describe.skip( 'simple integration test', () => {
     let code;
     after( () => {
-      //removeSync( output );
+      removeSync( output );
     });
     before( () => {
 
@@ -45,17 +45,16 @@ describe( 'rollup-plugin-inline', () => {
 
   });
 
-  describe.skip( 'complex integration test', () => {
-
-    let code;
+  describe( 'complex integration test', () => {
 
     after( () => {
-      removeSync( output );
+      //removeSync( output );
     });
 
     before( () => {
 
       const inline = plugin({
+        dest: output,
         processors: {
           'asset': alias( 'copy', 'ref' )
         }
@@ -64,12 +63,7 @@ describe( 'rollup-plugin-inline', () => {
       return rollup.rollup({
         entry: 'fixtures/complex.js',
         plugins: [ inline ]
-      }).then( bundle => {
-        var generated = bundle.generate();
-        code = generated.code;
-        console.log( code );
-        return inline.generate( output ).then( () => true );
-      });
+      }).then( bundle => bundle.write({ dest: join( output, 'main.js' ) }) );
     });
 
     it( 'should write files as expected', () => {
