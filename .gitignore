@@ -4,3 +4,6 @@ node_modules
 
 # Test Output
 test/test-out
+
+# Build Output
+dest
