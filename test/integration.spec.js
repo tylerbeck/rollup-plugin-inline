@@ -5,17 +5,21 @@ import { plugin, alias } from  '../src/inline';
 import less from 'less';
 
 process.chdir( __dirname );
-const output = './test-out';
+const output = 'test-out';
 
 describe( 'rollup-plugin-inline', () => {
-  describe.skip( 'simple integration test', () => {
+  after( () => {
+    removeSync( output );
+  });
+
+  describe( 'simple integration test', () => {
     let code;
-    after( () => {
-      removeSync( output );
-    });
+    let out = join( output, 'simple' )
+
     before( () => {
 
       const inline = plugin({
+        dest: out,
         processors: {
           'asset': alias( 'copy', 'ref' )
         }
@@ -25,36 +29,33 @@ describe( 'rollup-plugin-inline', () => {
         entry: 'fixtures/simple.js',
         plugins: [ inline ]
       }).then( bundle => {
-        var generated = bundle.generate();
-        code = generated.code;
-        return inline.generate( output ).then( () => true );
+        code = bundle.code;
+        return bundle.write({ dest: join( out, 'main.js' ) });
       });
 
     });
 
     it( 'should write files as expected', () => {
-      expect( () => readFileSync( join( output, 'fixtures/assets/img.png' ) ) )
+      expect( () => readFileSync( join( out, 'fixtures/assets/img.png' ) ) )
       .not.to.throw( Error );
     });
 
     it( 'should generate expected code', () => {
-      expect( code ).to.contain( 'fixtures/modules/a.js' );
-      expect( code ).to.contain( 'fixtures/modules/b.js' );
-      expect( code ).to.contain( 'fixtures/modules/c.js' );
+      let main = readFileSync( join( out, 'main.js'), 'utf8' );
+      expect( main ).to.contain( 'fixtures/modules/a.js' );
+      expect( main ).to.contain( 'fixtures/modules/b.js' );
+      expect( main ).to.contain( 'fixtures/modules/c.js' );
     });
 
   });
 
   describe( 'complex integration test', () => {
-
-    after( () => {
-      //removeSync( output );
-    });
+    let out = join( output, 'complex' )
 
     before( () => {
 
       const inline = plugin({
-        dest: output,
+        dest: out,
         processors: {
           'asset': alias( 'copy', 'ref' )
         }
@@ -63,7 +64,7 @@ describe( 'rollup-plugin-inline', () => {
       return rollup.rollup({
         entry: 'fixtures/complex.js',
         plugins: [ inline ]
-      }).then( bundle => bundle.write({ dest: join( output, 'main.js' ) }) );
+      }).then( bundle => bundle.write({ dest: join( out, 'main.js' ) }) );
     });
 
     it( 'should write files as expected', () => {
@@ -77,10 +78,6 @@ describe( 'rollup-plugin-inline', () => {
   describe.skip( 'process integration test', () => {
 
     let code;
-
-    after( () => {
-      //removeSync( output );
-    });
 
     before( () => {
 

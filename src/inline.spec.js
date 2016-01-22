@@ -5,11 +5,19 @@ import { MISSING_OPTIONS } from './util/Errors';
 const passThrough = () => ({ process: obj => obj });
 
 describe( 'inline processors', () => {
-  it( 'should expose base processors', ()=> {
+  it( 'should expose alias processor', ()=> {
     expect( inline.alias ).to.be.a( 'function' );
+  });
+  it( 'should expose copy processor', ()=> {
     expect( inline.copy ).to.be.a( 'function' );
+  });
+  it( 'should expose hash processor', ()=> {
     expect( inline.hash ).to.be.a( 'function' );
+  });
+  it( 'should expose ref processor', ()=> {
     expect( inline.ref ).to.be.a( 'function' );
+  });
+  it( 'should expose write processor', ()=> {
     expect( inline.write ).to.be.a( 'function' );
   });
 });
@@ -46,7 +54,7 @@ describe( 'inline.plugin', () => {
       it( 'should have the expected properties', () => {
         expect( plugin.load ).to.be.a( 'function' );
         expect( plugin.resolveId ).to.be.a( 'function' );
-        expect( plugin.write ).to.be.a( 'function' );
+        expect( plugin.onwrite ).to.be.a( 'function' );
       });
 
       describe( '.resolveId', () => {
@@ -133,7 +141,7 @@ describe( 'inline.plugin', () => {
         );
       });
 
-      describe( '.write', () => {
+      describe( '.onwrite', () => {
 
       });
     });

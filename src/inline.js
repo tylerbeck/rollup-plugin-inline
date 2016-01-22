@@ -125,7 +125,8 @@ function plugin( options = {}) {
       return loadResult;
     },
 
-    write() {
+    onwrite() {
+      console.log('onwrite', writeFns);
       return Promise.all( Object.keys( writeFns ).map( id => writeFns[ id ]( options.dest ) ) );
     }
   };
