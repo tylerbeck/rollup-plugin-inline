@@ -1,2 +1,2 @@
-import styles from 'less( ./assets/styles.less )';
-console.log( 'styles', styles );
+import { path } from 'less( ./assets/styles.less )';
+console.log( 'styles path', path );

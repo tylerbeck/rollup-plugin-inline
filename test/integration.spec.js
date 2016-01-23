@@ -14,10 +14,9 @@ describe( 'rollup-plugin-inline', () => {
 
   describe( 'simple integration test', () => {
     let code;
-    let out = join( output, 'simple' )
+    let out = join( output, 'simple' );
 
     before( () => {
-
       const inline = plugin({
         dest: out,
         processors: {
@@ -32,7 +31,6 @@ describe( 'rollup-plugin-inline', () => {
         code = bundle.code;
         return bundle.write({ dest: join( out, 'main.js' ) });
       });
-
     });
 
     it( 'should write files as expected', () => {
@@ -41,19 +39,17 @@ describe( 'rollup-plugin-inline', () => {
     });
 
     it( 'should generate expected code', () => {
-      let main = readFileSync( join( out, 'main.js'), 'utf8' );
+      let main = readFileSync( join( out, 'main.js' ), 'utf8' );
       expect( main ).to.contain( 'fixtures/modules/a.js' );
       expect( main ).to.contain( 'fixtures/modules/b.js' );
       expect( main ).to.contain( 'fixtures/modules/c.js' );
     });
-
   });
 
   describe( 'complex integration test', () => {
-    let out = join( output, 'complex' )
+    let out = join( output, 'complex' );
 
     before( () => {
-
       const inline = plugin({
         dest: out,
         processors: {
@@ -67,21 +63,18 @@ describe( 'rollup-plugin-inline', () => {
       }).then( bundle => bundle.write({ dest: join( out, 'main.js' ) }) );
     });
 
-    it( 'should write files as expected', () => {
-    });
+    it( 'should write files as expected', () => {});
 
-    it( 'should generate expected code', () => {
-    });
-
+    it( 'should generate expected code', () => {});
   });
 
-  describe.skip( 'process integration test', () => {
-
+  describe.only( 'process integration test', () => {
     let code;
+    let out = join( output, 'simple' );
 
     before( () => {
-
       const inline = plugin({
+        dest: out,
         processors: {
           'less': {
             resolve: () => [ 'read', 'less', 'write', 'ref' ],
@@ -99,19 +92,13 @@ describe( 'rollup-plugin-inline', () => {
         entry: 'fixtures/process.js',
         plugins: [ inline ]
       }).then( bundle => {
-        var generated = bundle.generate();
-        code = generated.code;
-        console.log( code );
-        return inline.generate( output ).then( () => true );
+        code = bundle.code;
+        return bundle.write({ dest: join( out, 'main.js' ) });
       });
     });
 
-    it( 'should write files as expected', () => {
-    });
+    it( 'should write files as expected', () => {});
 
-    it( 'should generate expected code', () => {
-    });
-
+    it( 'should generate expected code', () => {});
   });
-
 });
