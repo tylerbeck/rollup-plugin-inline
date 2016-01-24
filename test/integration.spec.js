@@ -68,7 +68,7 @@ describe( 'rollup-plugin-inline', () => {
     it( 'should generate expected code', () => {});
   });
 
-  describe.only( 'process integration test', () => {
+  describe( 'process integration test', () => {
     let code;
     let out = join( output, 'simple' );
 

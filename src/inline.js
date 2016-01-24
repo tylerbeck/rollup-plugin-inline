@@ -1,7 +1,5 @@
 import { createFilter } from 'rollup-pluginutils';
 import { resolve, dirname, relative } from 'path';
-import { parse } from './util/AST';
-import { requireOptions } from './util/Helpers';
 
 import alias from './processors/alias';
 import copy from './processors/copy';
@@ -126,7 +124,7 @@ function plugin( options = {}) {
     },
 
     onwrite() {
-      console.log('onwrite', writeFns);
+      console.log( 'onwrite', writeFns );
       return Promise.all( Object.keys( writeFns ).map( id => writeFns[ id ]( options.dest ) ) );
     }
   };

@@ -27,5 +27,6 @@
     "requireSpaceBeforeObjectValues": true,
     "requireArrowFunctions": true,
     "disallowParenthesesAroundArrowParam": true,
-    "requireShorthandArrowFunctions": true
+    "requireShorthandArrowFunctions": true,
+    "disallowUnusedParams": true
 }
