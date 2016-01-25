@@ -70,7 +70,7 @@ describe( 'rollup-plugin-inline', () => {
 
   describe( 'process integration test', () => {
     let code;
-    let out = join( output, 'simple' );
+    let out = join( output, 'process' );
 
     before( () => {
       const inline = plugin({
