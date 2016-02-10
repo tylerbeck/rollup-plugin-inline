@@ -1,2 +1,2 @@
 #!/bin/bash
-mocha   --require babel-core/register --require test/helpers/chai.js 'src/**/*.spec.js' 'test/**/*.spec.js'
+mocha --require test/helpers/babel.js --require test/helpers/chai.js 'src/**/*.spec.js' 'test/**/*.spec.js'

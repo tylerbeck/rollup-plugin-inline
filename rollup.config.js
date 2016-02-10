@@ -7,6 +7,9 @@ export default {
 	plugins: [
 		babel({
 			sourceMap: true
+			presets: [
+					"es2015-rollup"
+			]
 		})
 	],
 	external: external,

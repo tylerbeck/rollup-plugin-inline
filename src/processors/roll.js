@@ -1,4 +1,6 @@
 import rollup from 'rollup';
+//import babel from 'rollup-plugin-babel';
+
 import { verifyInputProperties } from '../util/ProcessorHelpers';
 
 export default function roll( options = {}) {
@@ -8,7 +10,12 @@ export default function roll( options = {}) {
       verifyInputProperties( obj, 'src' );
       return rollup.rollup({
         entry: obj.src,
-        plugins: [ options.inlineInterface ]
+        plugins: [
+          // babel({
+        	// 		sourceMap: true,
+        	// }),
+          options.inlineInterface
+        ]
       }).then( bundle => {
         let generated = bundle.generate({ format: options.format });
         obj.code = generated.code;
